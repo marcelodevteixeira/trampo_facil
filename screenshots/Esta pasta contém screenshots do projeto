@@ -1,0 +1,8 @@
+# Screenshots do Projeto
+
+Esta pasta deve conter as imagens de demonstração do aplicativo (prints das telas).
+
+Requisitos mínimos:
+1.  **Home Screen** (Tela Inicial com categorias e feed)
+2.  **Service Detail** (Detalhes do serviço)
+3.  **Login/Register** (Tela de autenticação)
