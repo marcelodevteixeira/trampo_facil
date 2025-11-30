@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, PlusCircle, User, MapPin } from 'lucide-react';
+import { Home, PlusCircle, User, MapPin, Hammer, Home as HomeIcon } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -17,8 +17,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <header className="bg-white shadow-sm sticky top-0 z-20">
         <div className="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="bg-primary p-1.5 rounded-lg">
-              <MapPin className="text-white w-5 h-5" />
+            <div className="bg-primary p-1.5 rounded-lg flex items-center justify-center relative w-8 h-8">
+               <HomeIcon className="text-white w-5 h-5 absolute" strokeWidth={2.5} />
+               <Hammer className="w-3 h-3 text-white absolute bottom-1 right-1 fill-white" />
             </div>
             <h1 className="text-xl font-extrabold text-secondary tracking-tight">Trampo<span className="text-primary">Fácil</span></h1>
           </div>

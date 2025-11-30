@@ -6,7 +6,7 @@ import { AuthState, ServiceJob, ServiceCategory, UserProfile } from './types';
 import { calculateDistance, getCurrentLocation } from './services/geo';
 import { fetchServices, createService, supabase } from './services/supabase';
 import { CATEGORY_ICONS, CATEGORY_COLORS, CATEGORY_IMAGES } from './constants';
-import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ArrowRight, ChevronDown, ChevronRight, SlidersHorizontal, Grid } from 'lucide-react';
+import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ArrowRight, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon } from 'lucide-react';
 
 // --- Pages ---
 
@@ -138,13 +138,19 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
            </button>
         )}
 
-        {/* Hero / Header Section */}
+        {/* Hero / Header Section - COMPACT PURPLE BANNER */}
         {!showList && (
-            <div className="pt-2 text-center">
-                <h2 className="text-xl font-medium text-gray-500">Olá,</h2>
-                <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">
-                    {user?.name ? user.name.split(' ')[0] : 'Visitante'}
-                </h1>
+            <div className="bg-primary rounded-2xl p-4 mb-4 text-white shadow-lg shadow-primary/20 relative overflow-hidden flex items-center">
+                {/* Decorative background blurs */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/10 rounded-full -ml-8 -mb-8 blur-lg"></div>
+
+                <div className="relative z-10">
+                    <span className="text-purple-200 text-sm font-medium mr-1">Olá,</span>
+                    <span className="text-xl font-extrabold tracking-tight text-white leading-tight">
+                        {user?.name ? user.name.split(' ')[0] : 'Visitante'}
+                    </span>
+                </div>
             </div>
         )}
 
@@ -174,18 +180,9 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
                 
                 {/* 
                    Carousel Container
-                   - snap-x snap-mandatory: Forces stopping at slide boundaries
-                   - flex: Arranges slides horizontally
                 */}
                 <div className="flex overflow-x-auto pb-4 -mx-4 scrollbar-hide snap-x snap-mandatory">
                     {categorySlides.map((slide, index) => (
-                        /* 
-                           Slide Wrapper 
-                           - w-full: Takes full width of container (screen width)
-                           - flex-shrink-0: Prevents shrinking
-                           - px-4: Adds internal padding to align content
-                           - snap-center: Snaps this slide to center
-                        */
                         <div key={index} className="w-full flex-shrink-0 px-4 grid grid-cols-3 gap-3 snap-center">
                             {slide.map((cat) => {
                                 const bgImage = CATEGORY_IMAGES[cat];
@@ -617,76 +614,91 @@ const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void }> = ({
     );
 };
 
-// --- Main App ---
-
-const ProtectedRoute: React.FC<{ children: React.ReactNode; authState: AuthState }> = ({ children, authState }) => {
-  if (!authState.loading && !authState.user) {
-    return <Navigate to="/login" replace />;
-  }
-  return <>{children}</>;
-};
-
+// App Main Component
 const App: React.FC = () => {
-  const [authState, setAuthState] = useState<AuthState>({ user: null, loading: true, session: null });
-  const [location, setLocation] = useState<{ lat: number; lng: number } | null>(null);
+    const [auth, setAuth] = useState<AuthState>({
+        user: null,
+        loading: true,
+        session: null
+    });
+    const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
 
-  useEffect(() => {
-    // 1. Check User Session
-    const checkSession = async () => {
-        setAuthState({ user: null, loading: false, session: null });
+    useEffect(() => {
+        // Try to load from local storage
+        const storedAuth = localStorage.getItem('trampo_auth');
+        if (storedAuth) {
+            try {
+                setAuth(JSON.parse(storedAuth));
+            } catch (e) {
+                console.error("Failed to parse auth", e);
+                setAuth(prev => ({ ...prev, loading: false }));
+            }
+        } else {
+            setAuth(prev => ({ ...prev, loading: false }));
+        }
+
+        // Get location
+        getCurrentLocation()
+            .then(loc => {
+                setUserLocation({ lat: loc.latitude, lng: loc.longitude });
+            })
+            .catch(err => {
+                console.log("Location denied or error", err);
+                // Default location (Sao Paulo) if denied
+                setUserLocation({ lat: -23.550520, lng: -46.633308 }); 
+            });
+    }, []);
+
+    const handleLogin = (authData: AuthState) => {
+        setAuth(authData);
+        localStorage.setItem('trampo_auth', JSON.stringify(authData));
     };
 
-    // 2. Get Geolocation
-    const getGeo = async () => {
-      try {
-        const pos = await getCurrentLocation();
-        setLocation({ lat: pos.latitude, lng: pos.longitude });
-      } catch (e) {
-        // console.warn("Location denied, defaulting to Brasilia center");
-        // Brasilia Coords: -15.7975, -47.8919
-        setLocation({ lat: -15.7975, lng: -47.8919 });
-      }
+    const handleLogout = () => {
+        const newState = { user: null, loading: false, session: null };
+        setAuth(newState);
+        localStorage.removeItem('trampo_auth');
     };
 
-    checkSession();
-    getGeo();
-  }, []);
+    if (auth.loading) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            </div>
+        );
+    }
 
-  const handleLogout = () => {
-      setAuthState({ user: null, loading: false, session: null });
-  };
-
-  return (
-    <HashRouter>
-      <Routes>
-        <Route path="/login" element={<Login setAuth={setAuthState} />} />
-        
-        <Route path="/" element={
-           authState.user ? <Home userLocation={location} user={authState.user} /> : <Navigate to="/login" />
-        } />
-        
-        <Route path="/categories" element={
-            authState.user ? <AllCategories /> : <Navigate to="/login" />
-        } />
-
-        <Route path="/service/:id" element={
-            authState.user ? <ServiceDetail /> : <Navigate to="/login" />
-        } />
-
-        <Route path="/add" element={
-            <ProtectedRoute authState={authState}>
-                <AddService user={authState.user} userLocation={location} />
-            </ProtectedRoute>
-        } />
-        
-        <Route path="/profile" element={
-            <ProtectedRoute authState={authState}>
-                <Profile user={authState.user} onLogout={handleLogout} />
-            </ProtectedRoute>
-        } />
-      </Routes>
-    </HashRouter>
-  );
+    return (
+        <HashRouter>
+            <Routes>
+                <Route path="/login" element={
+                    !auth.user ? <Login setAuth={handleLogin} /> : <Navigate to="/" />
+                } />
+                
+                <Route path="/" element={
+                    auth.user ? <Home user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="/categories" element={
+                    auth.user ? <AllCategories /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="/service/:id" element={
+                    auth.user ? <ServiceDetail /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="/add" element={
+                    auth.user ? <AddService user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="/profile" element={
+                    auth.user ? <Profile user={auth.user} onLogout={handleLogout} /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+        </HashRouter>
+    );
 };
 
 export default App;
