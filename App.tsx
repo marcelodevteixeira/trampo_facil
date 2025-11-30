@@ -6,7 +6,7 @@ import { AuthState, ServiceJob, ServiceCategory, UserProfile } from './types';
 import { calculateDistance, getCurrentLocation } from './services/geo';
 import { fetchServices, createService, supabase } from './services/supabase';
 import { CATEGORY_ICONS, CATEGORY_COLORS, CATEGORY_IMAGES } from './constants';
-import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon } from 'lucide-react';
+import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon, Moon, Sun } from 'lucide-react';
 
 // --- Pages ---
 
@@ -22,10 +22,10 @@ const AllCategories: React.FC = () => {
   return (
     <Layout>
       <div className="flex items-center gap-2 mb-6">
-         <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 text-gray-700">
+         <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200">
             <ArrowLeft className="w-5 h-5" />
          </button>
-         <span className="font-bold text-gray-900 text-lg">Todas as Categorias</span>
+         <span className="font-bold text-gray-900 dark:text-white text-lg">Todas as Categorias</span>
       </div>
 
       <div className="grid grid-cols-2 gap-4 pb-4">
@@ -35,15 +35,15 @@ const AllCategories: React.FC = () => {
                 <button
                     key={cat}
                     onClick={() => handleSelect(cat)}
-                    className="aspect-square bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden hover:shadow-md transition-all active:scale-[0.98]"
+                    className="aspect-square bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col overflow-hidden hover:shadow-md transition-all active:scale-[0.98]"
                 >
                     <div 
-                        className="h-2/3 w-full bg-cover bg-center bg-gray-200"
+                        className="h-2/3 w-full bg-cover bg-center bg-gray-200 dark:bg-gray-700"
                         style={{ backgroundImage: `url('${bgImage}')` }}
                     >
                     </div>
-                    <div className="h-1/3 flex items-center justify-center p-2 bg-white">
-                        <span className="text-sm font-bold text-gray-800 text-center leading-tight">
+                    <div className="h-1/3 flex items-center justify-center p-2 bg-white dark:bg-gray-800">
+                        <span className="text-sm font-bold text-gray-800 dark:text-gray-200 text-center leading-tight">
                             {cat}
                         </span>
                     </div>
@@ -131,7 +131,7 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
     <Layout>
       <div className="space-y-6 relative min-h-[80vh]">
         
-        {/* Floating Action Button (FAB) REMOVED */}
+        {/* Floating Action Button (FAB) Removed */}
 
         {/* Hero / Header Section - COMPACT PURPLE BANNER */}
         {!showList && (
@@ -157,7 +157,7 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
             <input
               type="text"
               placeholder="O que você precisa?"
-              className="block w-full pl-11 pr-4 py-4 border-none rounded-2xl bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm font-medium"
+              className="block w-full pl-11 pr-4 py-4 border-none rounded-2xl bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 shadow-sm font-medium transition-colors"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
             />
@@ -167,7 +167,7 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
         {!showList && (
             <div>
                 <div className="flex justify-between items-center mb-4 px-1">
-                    <h3 className="font-bold text-lg text-gray-900">Categorias</h3>
+                    <h3 className="font-bold text-lg text-gray-900 dark:text-white">Categorias</h3>
                     <Link to="/categories" className="text-sm font-bold text-primary hover:underline">
                       Ver tudo
                     </Link>
@@ -185,15 +185,15 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
                                     <button
                                         key={cat}
                                         onClick={() => setSelectedCategory(cat)}
-                                        className="h-32 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden hover:shadow-md transition-all active:scale-[0.98]"
+                                        className="h-32 bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col overflow-hidden hover:shadow-md transition-all active:scale-[0.98]"
                                     >
                                         <div 
-                                            className="h-[65%] w-full bg-cover bg-center bg-gray-200"
+                                            className="h-[65%] w-full bg-cover bg-center bg-gray-200 dark:bg-gray-700"
                                             style={{ backgroundImage: `url('${bgImage}')` }}
                                         >
                                         </div>
-                                        <div className="h-[35%] flex items-center justify-center px-1 bg-white">
-                                            <span className="text-[10px] font-bold text-gray-800 text-center leading-tight line-clamp-2">
+                                        <div className="h-[35%] flex items-center justify-center px-1 bg-white dark:bg-gray-800">
+                                            <span className="text-[10px] font-bold text-gray-800 dark:text-gray-200 text-center leading-tight line-clamp-2">
                                                 {cat}
                                             </span>
                                         </div>
@@ -211,11 +211,11 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
              <div className="flex items-center gap-2 mb-4">
                 <button 
                     onClick={() => setSelectedCategory(null)}
-                    className="p-2 -ml-2 rounded-full hover:bg-gray-100 text-gray-600"
+                    className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300"
                 >
                     <ArrowLeft className="w-5 h-5" />
                 </button>
-                <h3 className="font-bold text-gray-900">
+                <h3 className="font-bold text-gray-900 dark:text-white">
                     {selectedCategory || 'Resultados da busca'}
                 </h3>
              </div>
@@ -225,7 +225,7 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
         <div>
             {!showList && (
                 <div className="flex justify-between items-center mb-4 px-1 mt-2">
-                    <h3 className="font-bold text-lg text-gray-900">Recomendados</h3>
+                    <h3 className="font-bold text-lg text-gray-900 dark:text-white">Recomendados</h3>
                 </div>
             )}
 
@@ -239,11 +239,11 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
                 ))
             ) : (
                 <div className="text-center py-12 flex flex-col items-center">
-                    <div className="bg-gray-100 w-20 h-20 rounded-full flex items-center justify-center mb-4 text-gray-400">
+                    <div className="bg-gray-100 dark:bg-gray-800 w-20 h-20 rounded-full flex items-center justify-center mb-4 text-gray-400 dark:text-gray-500">
                         <Search className="w-8 h-8" />
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900">Nenhum serviço encontrado</h3>
-                    <p className="text-gray-500 mt-2 text-sm max-w-[200px]">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">Nenhum serviço encontrado</h3>
+                    <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm max-w-[200px]">
                         Não encontramos resultados para sua busca nesta região.
                     </p>
                     <button 
@@ -296,22 +296,22 @@ const ServiceDetail: React.FC = () => {
   return (
     <Layout>
       <div className="flex items-center gap-2 mb-4">
-         <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 text-gray-700">
+         <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200">
             <ArrowLeft className="w-5 h-5" />
          </button>
-         <span className="font-bold text-gray-900">Detalhes</span>
+         <span className="font-bold text-gray-900 dark:text-white">Detalhes</span>
       </div>
 
-      <div className="bg-white rounded-3xl shadow-sm overflow-hidden mb-6 border border-gray-100">
-        <div className="h-32 bg-primary/10 flex items-center justify-center">
+      <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm overflow-hidden mb-6 border border-gray-100 dark:border-gray-700">
+        <div className="h-32 bg-primary/10 dark:bg-purple-900/20 flex items-center justify-center">
           <Icon className="w-16 h-16 text-primary opacity-50" />
         </div>
         
         <div className="p-6">
            <div className="flex justify-between items-start mb-4">
                 <div>
-                    <h1 className="text-xl font-extrabold text-gray-900 leading-tight">{service.title}</h1>
-                    <span className="inline-block mt-2 px-3 py-1 bg-gray-100 text-gray-600 text-xs font-bold rounded-full">
+                    <h1 className="text-xl font-extrabold text-gray-900 dark:text-white leading-tight">{service.title}</h1>
+                    <span className="inline-block mt-2 px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs font-bold rounded-full">
                         {service.category}
                     </span>
                 </div>
@@ -321,22 +321,22 @@ const ServiceDetail: React.FC = () => {
                 </div>
            </div>
 
-           <div className="flex items-center gap-4 py-6 border-t border-gray-100">
-             <div className="w-12 h-12 bg-gray-900 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-md">
+           <div className="flex items-center gap-4 py-6 border-t border-gray-100 dark:border-gray-700">
+             <div className="w-12 h-12 bg-gray-900 dark:bg-gray-700 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-md">
                 {service.provider_name ? service.provider_name.charAt(0) : 'U'}
              </div>
              <div>
-                <p className="text-xs text-gray-500 font-medium">Profissional</p>
-                <p className="font-bold text-gray-900">{service.provider_name}</p>
-                <div className="flex items-center text-xs text-gray-500 mt-0.5">
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-medium">Profissional</p>
+                <p className="font-bold text-gray-900 dark:text-white">{service.provider_name}</p>
+                <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                     <MapPin className="w-3 h-3 mr-1" /> {service.distance} km de distância
                 </div>
              </div>
            </div>
 
-           <div className="bg-gray-50 p-5 rounded-2xl">
-             <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wide mb-2 opacity-70">Sobre o serviço</h3>
-             <p className="text-gray-700 leading-relaxed text-sm">
+           <div className="bg-gray-50 dark:bg-gray-900/50 p-5 rounded-2xl">
+             <h3 className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wide mb-2 opacity-70">Sobre o serviço</h3>
+             <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
                {service.description}
              </p>
            </div>
@@ -346,7 +346,7 @@ const ServiceDetail: React.FC = () => {
       <div className="grid grid-cols-2 gap-3 pb-6">
         <button 
           onClick={handleCall}
-          className="flex items-center justify-center gap-2 py-4 rounded-xl bg-white border-2 border-gray-200 text-gray-700 font-bold active:bg-gray-50 transition-colors"
+          className="flex items-center justify-center gap-2 py-4 rounded-xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-white font-bold active:bg-gray-50 dark:active:bg-gray-700 transition-colors"
         >
           <Phone className="w-5 h-5" />
           Ligar
@@ -405,17 +405,17 @@ const AddService: React.FC<{ user: UserProfile | null; userLocation: any }> = ({
   return (
     <Layout>
       <div className="mb-6">
-        <h2 className="text-2xl font-extrabold text-gray-900">Anunciar Serviço</h2>
-        <p className="text-gray-500 font-medium text-sm">Divulgue seu trabalho para a vizinhança.</p>
+        <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Anunciar Serviço</h2>
+        <p className="text-gray-500 dark:text-gray-400 font-medium text-sm">Divulgue seu trabalho para a vizinhança.</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+      <form onSubmit={handleSubmit} className="space-y-5 bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
         <div>
-          <label className="block text-xs font-bold text-gray-900 uppercase tracking-wide mb-2">Título do Anúncio</label>
+          <label className="block text-xs font-bold text-gray-900 dark:text-gray-300 uppercase tracking-wide mb-2">Título do Anúncio</label>
           <input
             required
             type="text"
-            className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-900"
+            className="w-full p-4 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-gray-400 dark:placeholder-gray-500"
             placeholder="Ex: Eletricista 24h"
             value={formData.title}
             onChange={e => setFormData({...formData, title: e.target.value})}
@@ -423,9 +423,9 @@ const AddService: React.FC<{ user: UserProfile | null; userLocation: any }> = ({
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-gray-900 uppercase tracking-wide mb-2">Categoria</label>
+          <label className="block text-xs font-bold text-gray-900 dark:text-gray-300 uppercase tracking-wide mb-2">Categoria</label>
           <select
-            className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-gray-900"
+            className="w-full p-4 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all"
             value={formData.category}
             onChange={e => setFormData({...formData, category: e.target.value as ServiceCategory})}
           >
@@ -436,11 +436,11 @@ const AddService: React.FC<{ user: UserProfile | null; userLocation: any }> = ({
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-gray-900 uppercase tracking-wide mb-2">Descrição</label>
+          <label className="block text-xs font-bold text-gray-900 dark:text-gray-300 uppercase tracking-wide mb-2">Descrição</label>
           <textarea
             required
             rows={4}
-            className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-gray-400 text-gray-900"
+            className="w-full p-4 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-gray-400 dark:placeholder-gray-500"
             placeholder="Descreva sua experiência e o serviço..."
             value={formData.description}
             onChange={e => setFormData({...formData, description: e.target.value})}
@@ -449,20 +449,20 @@ const AddService: React.FC<{ user: UserProfile | null; userLocation: any }> = ({
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-gray-900 uppercase tracking-wide mb-2">Valor (R$)</label>
+            <label className="block text-xs font-bold text-gray-900 dark:text-gray-300 uppercase tracking-wide mb-2">Valor (R$)</label>
             <input
               required
               type="number"
-              className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none text-gray-900"
+              className="w-full p-4 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
               placeholder="0.00"
               value={formData.price}
               onChange={e => setFormData({...formData, price: e.target.value})}
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-gray-900 uppercase tracking-wide mb-2">Cobrança</label>
+            <label className="block text-xs font-bold text-gray-900 dark:text-gray-300 uppercase tracking-wide mb-2">Cobrança</label>
             <select
-              className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 focus:ring-2 focus:ring-primary outline-none text-gray-900"
+              className="w-full p-4 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary outline-none"
               value={formData.price_unit}
               onChange={e => setFormData({...formData, price_unit: e.target.value as any})}
             >
@@ -484,10 +484,11 @@ const AddService: React.FC<{ user: UserProfile | null; userLocation: any }> = ({
   );
 };
 
-// 5. Auth Pages
+// 5. Auth Pages (Updated with Welcome Screen)
 const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showInput, setShowInput] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -503,78 +504,145 @@ const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
     }, 1000);
   };
 
+  // Welcome Screen
+  if (!showInput) {
+      return (
+          <div className="min-h-screen bg-gradient-to-br from-purple-800 to-purple-600 flex flex-col items-center justify-center p-6 text-center text-white relative overflow-hidden">
+              {/* Background pattern */}
+              <div className="absolute inset-0 overflow-hidden opacity-30">
+                  <div className="absolute top-10 right-10 w-96 h-96 bg-purple-500 rounded-full blur-3xl mix-blend-screen"></div>
+                  <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-900 rounded-full blur-3xl mix-blend-multiply"></div>
+                  {/* Faint network lines simulation */}
+                  <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIDQwIiBzdHlsZT0ib3BhY2l0eTogMC4wNSI+PHBhdGggZD0iTTAgNDBMNDAgMEgwVjQwWiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=')]"></div>
+              </div>
+
+              <div className="flex-1 flex flex-col items-center justify-center z-10 w-full animate-fade-in-up">
+                  <div className="mb-8 transform rotate-3 drop-shadow-2xl">
+                      <div className="relative w-32 h-32 flex items-center justify-center">
+                           {/* White House Icon */}
+                           <HomeIcon className="w-32 h-32 text-white absolute" strokeWidth={0} fill="white" />
+                           {/* 'Cutout' Hammer in Background Color */}
+                           <Hammer className="w-16 h-16 text-purple-700 absolute -bottom-2 -right-2 transform rotate-12" fill="currentColor" strokeWidth={0} />
+                      </div>
+                  </div>
+                  <h1 className="text-4xl font-extrabold tracking-tight mb-2 drop-shadow-md">TrampoFácil</h1>
+                  <p className="text-purple-100/90 font-medium max-w-[240px] leading-relaxed text-lg tracking-wide">
+                    Conectando pessoas a oportunidades reais.
+                  </p>
+              </div>
+
+              <div className="z-10 w-full mb-12 space-y-4 max-w-sm">
+                  <button 
+                    onClick={() => setShowInput(true)}
+                    className="w-full bg-white text-purple-700 font-bold py-4 rounded-xl shadow-xl shadow-purple-900/20 active:scale-[0.98] transition-all text-lg hover:bg-gray-50"
+                  >
+                      Fazer Login
+                  </button>
+                  <button className="w-full bg-transparent border-2 border-white/40 text-white font-bold py-4 rounded-xl active:scale-[0.98] transition-all hover:bg-white/10 hover:border-white/60">
+                      Criar Conta
+                  </button>
+              </div>
+          </div>
+      );
+  }
+
+  // Form Screen
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center relative overflow-hidden">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex flex-col items-center justify-center p-6 text-center relative overflow-hidden transition-colors duration-200">
        {/* Decorative circles */}
-       <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[40%] bg-primary/10 rounded-full blur-3xl"></div>
-       <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[30%] bg-primary/5 rounded-full blur-3xl"></div>
+       <div className="absolute top-[-20%] right-[-20%] w-[80%] h-[40%] bg-primary/10 rounded-full blur-3xl pointer-events-none"></div>
+       <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[30%] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+       <div className="w-full max-w-sm relative z-10 flex justify-start mb-4">
+           <button onClick={() => setShowInput(false)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 dark:text-gray-400">
+               <ArrowLeft className="w-6 h-6" />
+           </button>
+       </div>
 
        <div className="bg-primary p-4 rounded-2xl mb-8 shadow-xl shadow-primary/20 rotate-3 transform hover:rotate-0 transition-all">
-          <MapPin className="text-white w-10 h-10" />
+          <div className="relative w-8 h-8 flex items-center justify-center">
+                <HomeIcon className="w-8 h-8 text-white absolute" strokeWidth={2.5} />
+                <Hammer className="w-4 h-4 text-white absolute -bottom-1 -right-1 fill-white" />
+          </div>
        </div>
        
-       <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Trampo<span className="text-primary">Fácil</span></h1>
-       <p className="text-gray-500 mb-10 max-w-xs font-medium">Conectando pessoas a oportunidades reais na sua região.</p>
+       <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">Bem-vindo</h1>
+       <p className="text-gray-500 dark:text-gray-400 mb-10 max-w-xs font-medium">Insira seus dados para continuar.</p>
 
        <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4 relative z-10">
           <div className="space-y-4">
-            <input type="email" placeholder="E-mail" className="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 text-gray-900 outline-none focus:ring-2 focus:ring-primary focus:bg-white transition-all text-gray-900" required />
-            <input type="password" placeholder="Senha" className="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 text-gray-900 outline-none focus:ring-2 focus:ring-primary focus:bg-white transition-all text-gray-900" required />
+            <input type="email" placeholder="E-mail" className="w-full p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-gray-900 transition-all" required />
+            <input type="password" placeholder="Senha" className="w-full p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-gray-900 transition-all" required />
           </div>
           <button disabled={loading} className="w-full bg-primary text-white font-bold py-4 rounded-xl shadow-xl shadow-primary/30 active:scale-95 transition-all hover:bg-purple-700">
              {loading ? 'Entrando...' : 'Entrar'}
           </button>
        </form>
-       <button className="mt-8 text-primary font-bold text-sm hover:underline">Criar conta nova</button>
+       <button className="mt-8 text-primary font-bold text-sm hover:underline">Esqueci minha senha</button>
     </div>
   );
 };
 
 // 6. Profile
-const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void }> = ({ user, onLogout }) => {
+const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void; theme: string; toggleTheme: () => void }> = ({ user, onLogout, theme, toggleTheme }) => {
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [radius, setRadius] = useState(30);
 
     return (
         <Layout>
             <div className="flex flex-col items-center py-10">
-                <div className="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold mb-4 shadow-lg shadow-primary/30 border-4 border-white">
+                <div className="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold mb-4 shadow-lg shadow-primary/30 border-4 border-white dark:border-gray-800 transition-colors">
                     {user?.name?.charAt(0) || 'U'}
                 </div>
-                <h2 className="text-2xl font-extrabold text-gray-900">{user?.name || 'Visitante'}</h2>
-                <p className="text-gray-500 font-medium">{user?.email || 'email@exemplo.com'}</p>
-                <div className="flex items-center gap-2 mt-3 text-sm text-gray-400 bg-gray-100 px-3 py-1 rounded-full">
+                <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">{user?.name || 'Visitante'}</h2>
+                <p className="text-gray-500 dark:text-gray-400 font-medium">{user?.email || 'email@exemplo.com'}</p>
+                <div className="flex items-center gap-2 mt-3 text-sm text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
                     <MapPin className="w-3 h-3" /> Brasília, DF
                 </div>
             </div>
 
             <div className="space-y-3">
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center hover:border-primary/20 transition-colors cursor-pointer">
-                    <span className="text-gray-900 font-bold text-sm">Meus Anúncios</span>
-                    <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">0</span>
+                <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex justify-between items-center hover:border-primary/20 transition-colors cursor-pointer">
+                    <span className="text-gray-900 dark:text-white font-bold text-sm">Meus Anúncios</span>
+                    <span className="bg-primary/10 dark:bg-purple-900/30 text-primary dark:text-purple-300 px-3 py-1 rounded-full text-xs font-bold">0</span>
                 </div>
-                <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center hover:border-primary/20 transition-colors cursor-pointer">
-                    <span className="text-gray-900 font-bold text-sm">Serviços Contratados</span>
-                    <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold">0</span>
+                <div className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 flex justify-between items-center hover:border-primary/20 transition-colors cursor-pointer">
+                    <span className="text-gray-900 dark:text-white font-bold text-sm">Serviços Contratados</span>
+                    <span className="bg-primary/10 dark:bg-purple-900/30 text-primary dark:text-purple-300 px-3 py-1 rounded-full text-xs font-bold">0</span>
                 </div>
                 
-                {/* Configurações with Radius Slider */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden transition-all">
+                {/* Configurações with Radius Slider and Theme Toggle */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden transition-all">
                     <div 
                         onClick={() => setSettingsOpen(!settingsOpen)}
-                        className="p-5 flex justify-between items-center hover:bg-gray-50 cursor-pointer"
+                        className="p-5 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer"
                     >
                         <div className="flex items-center gap-3">
-                            <span className="text-gray-900 font-bold text-sm">Configurações</span>
+                            <span className="text-gray-900 dark:text-white font-bold text-sm">Configurações</span>
                         </div>
-                        {settingsOpen ? <ChevronDown className="w-5 h-5 text-primary" /> : <ChevronRight className="w-5 h-5 text-gray-300" />}
+                        {settingsOpen ? <ChevronDown className="w-5 h-5 text-primary" /> : <ChevronRight className="w-5 h-5 text-gray-300 dark:text-gray-600" />}
                     </div>
                     
                     {settingsOpen && (
-                        <div className="p-5 pt-0 bg-white border-t border-gray-50">
-                            <div className="bg-gray-50 rounded-xl p-4 mt-2">
+                        <div className="p-5 pt-0 bg-white dark:bg-gray-800 border-t border-gray-50 dark:border-gray-700">
+                            
+                            {/* Theme Toggle */}
+                            <div className="flex justify-between items-center py-4 border-b border-gray-100 dark:border-gray-700">
+                                <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-medium text-xs uppercase tracking-wide">
+                                    {theme === 'dark' ? <Moon className="w-4 h-4 text-purple-400" /> : <Sun className="w-4 h-4 text-orange-400" />}
+                                    Modo Escuro
+                                </div>
+                                <button 
+                                    onClick={toggleTheme}
+                                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-900 ${theme === 'dark' ? 'bg-primary' : 'bg-gray-200'}`}
+                                >
+                                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${theme === 'dark' ? 'translate-x-6' : 'translate-x-1'}`} />
+                                </button>
+                            </div>
+
+                            <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-4 mt-4">
                                 <div className="flex justify-between items-center mb-3">
-                                    <div className="flex items-center gap-2 text-gray-700 font-medium text-xs uppercase tracking-wide">
+                                    <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-medium text-xs uppercase tracking-wide">
                                         <SlidersHorizontal className="w-4 h-4" />
                                         Raio de Distância
                                     </div>
@@ -586,7 +654,7 @@ const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void }> = ({
                                     max="100" 
                                     value={radius} 
                                     onChange={(e) => setRadius(parseInt(e.target.value))}
-                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                                    className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-primary"
                                 />
                                 <div className="flex justify-between text-[10px] text-gray-400 mt-2 font-medium">
                                     <span>1 km</span>
@@ -600,7 +668,7 @@ const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void }> = ({
 
             <button 
                 onClick={onLogout}
-                className="w-full mt-10 flex items-center justify-center gap-2 text-red-600 font-bold py-4 rounded-xl hover:bg-red-50 transition-colors border border-transparent hover:border-red-100"
+                className="w-full mt-10 flex items-center justify-center gap-2 text-red-600 font-bold py-4 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors border border-transparent hover:border-red-100 dark:hover:border-red-900/30"
             >
                 <LogOut className="w-5 h-5" />
                 Sair da conta
@@ -609,77 +677,109 @@ const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void }> = ({
     );
 };
 
-// 7. Main App Orchestrator
+// App Main Component
 const App: React.FC = () => {
-  const [auth, setAuth] = useState<AuthState>({
-    user: null, // Start logged out for demo, or change if persistent auth is implemented
-    loading: true,
-    session: null
-  });
+    const [auth, setAuth] = useState<AuthState>({
+        user: null,
+        loading: true,
+        session: null
+    });
+    const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
+    const [theme, setTheme] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return localStorage.getItem('theme') || 'light';
+        }
+        return 'light';
+    });
 
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
+    useEffect(() => {
+        // Theme Management
+        const root = window.document.documentElement;
+        root.classList.remove('light', 'dark');
+        root.classList.add(theme);
+        localStorage.setItem('theme', theme);
+    }, [theme]);
 
-  useEffect(() => {
-    // Simulate checking for existing session
-    const initAuth = async () => {
-      // In a real app: await supabase.auth.getSession()
-      // For demo, we just finish loading (starting as logged out).
-      setAuth(prev => ({ ...prev, loading: false }));
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light');
     };
 
-    initAuth();
+    useEffect(() => {
+        // Try to load from local storage
+        const storedAuth = localStorage.getItem('trampo_auth');
+        if (storedAuth) {
+            try {
+                setAuth(JSON.parse(storedAuth));
+            } catch (e) {
+                console.error("Failed to parse auth", e);
+                setAuth(prev => ({ ...prev, loading: false }));
+            }
+        } else {
+            setAuth(prev => ({ ...prev, loading: false }));
+        }
 
-    // Get Geo Location
-    getCurrentLocation()
-      .then(loc => {
-        setUserLocation({ lat: loc.latitude, lng: loc.longitude });
-      })
-      .catch((err) => {
-        console.warn("Location error or denied:", err);
-        // Fallback to Sao Paulo
-        setUserLocation({ lat: -23.550520, lng: -46.633308 });
-      });
-  }, []);
+        // Get location
+        getCurrentLocation()
+            .then(loc => {
+                setUserLocation({ lat: loc.latitude, lng: loc.longitude });
+            })
+            .catch(err => {
+                console.log("Location denied or error", err);
+                // Default location (Sao Paulo) if denied
+                setUserLocation({ lat: -23.550520, lng: -46.633308 }); 
+            });
+    }, []);
 
-  if (auth.loading) {
+    const handleLogin = (authData: AuthState) => {
+        setAuth(authData);
+        localStorage.setItem('trampo_auth', JSON.stringify(authData));
+    };
+
+    const handleLogout = () => {
+        const newState = { user: null, loading: false, session: null };
+        setAuth(newState);
+        localStorage.removeItem('trampo_auth');
+    };
+
+    if (auth.loading) {
+        return (
+            <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+                <Loader2 className="w-8 h-8 text-primary animate-spin" />
+            </div>
+        );
+    }
+
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="animate-spin text-primary w-8 h-8" />
-      </div>
+        <HashRouter>
+            <Routes>
+                <Route path="/login" element={
+                    !auth.user ? <Login setAuth={handleLogin} /> : <Navigate to="/" />
+                } />
+                
+                <Route path="/" element={
+                    auth.user ? <Home user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="/categories" element={
+                    auth.user ? <AllCategories /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="/service/:id" element={
+                    auth.user ? <ServiceDetail /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="/add" element={
+                    auth.user ? <AddService user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="/profile" element={
+                    auth.user ? <Profile user={auth.user} onLogout={handleLogout} theme={theme} toggleTheme={toggleTheme} /> : <Navigate to="/login" />
+                } />
+                
+                <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+        </HashRouter>
     );
-  }
-
-  return (
-    <HashRouter>
-      <Routes>
-        <Route path="/login" element={
-          !auth.user ? <Login setAuth={setAuth} /> : <Navigate to="/" replace />
-        } />
-        
-        <Route path="/" element={
-          auth.user ? <Home userLocation={userLocation} user={auth.user} /> : <Navigate to="/login" replace />
-        } />
-        
-        <Route path="/categories" element={
-          auth.user ? <AllCategories /> : <Navigate to="/login" replace />
-        } />
-
-        <Route path="/service/:id" element={
-          auth.user ? <ServiceDetail /> : <Navigate to="/login" replace />
-        } />
-        
-        <Route path="/add" element={
-          auth.user ? <AddService user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" replace />
-        } />
-        
-        <Route path="/profile" element={
-          auth.user ? <Profile user={auth.user} onLogout={() => setAuth({ user: null, loading: false, session: null })} /> : <Navigate to="/login" replace />
-        } />
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </HashRouter>
-  );
 };
 
 export default App;

@@ -12,20 +12,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col font-sans text-secondary">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col font-sans text-secondary dark:text-gray-100 transition-colors duration-200">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-20">
+      <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-20 border-b border-transparent dark:border-gray-800 transition-colors duration-200">
         <div className="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="bg-primary p-1.5 rounded-lg flex items-center justify-center relative w-8 h-8">
                <HomeIcon className="text-white w-5 h-5 absolute" strokeWidth={2.5} />
                <Hammer className="w-3 h-3 text-white absolute bottom-1 right-1 fill-white" />
             </div>
-            <h1 className="text-xl font-extrabold text-secondary tracking-tight">Trampo<span className="text-primary">Fácil</span></h1>
+            <h1 className="text-xl font-extrabold text-secondary dark:text-white tracking-tight">Trampo<span className="text-primary">Fácil</span></h1>
           </div>
           {/* Only show add button on header if not on add page */}
           {!isActive('/add') && (
-            <Link to="/add" className="text-sm font-bold text-primary border border-primary/20 hover:bg-purple-50 px-4 py-1.5 rounded-full transition-colors">
+            <Link to="/add" className="text-sm font-bold text-primary dark:text-purple-400 border border-primary/20 dark:border-purple-500/30 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-4 py-1.5 rounded-full transition-colors">
               Anunciar
             </Link>
           )}
@@ -38,12 +38,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-30 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+      <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 z-30 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] transition-colors duration-200">
         <div className="max-w-md mx-auto flex justify-around items-center h-16">
           <Link
             to="/"
             className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-              isActive('/') ? 'text-primary' : 'text-gray-400 hover:text-gray-600'
+              isActive('/') ? 'text-primary dark:text-purple-400' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
           >
             <Home className={`w-6 h-6 ${isActive('/') && 'fill-current'}`} />
@@ -53,7 +53,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Link
             to="/add"
             className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-              isActive('/add') ? 'text-primary' : 'text-gray-400 hover:text-gray-600'
+              isActive('/add') ? 'text-primary dark:text-purple-400' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
           >
             <PlusCircle className={`w-6 h-6 ${isActive('/add') && 'fill-current'}`} />
@@ -63,7 +63,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <Link
             to="/profile"
             className={`flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors ${
-              isActive('/profile') ? 'text-primary' : 'text-gray-400 hover:text-gray-600'
+              isActive('/profile') ? 'text-primary dark:text-purple-400' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'
             }`}
           >
             <User className={`w-6 h-6 ${isActive('/profile') && 'fill-current'}`} />

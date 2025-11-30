@@ -15,6 +15,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
+        darkMode: 'class',
         theme: {
           extend: {
             fontFamily: {
@@ -36,6 +37,7 @@
       body {
         -webkit-tap-highlight-color: transparent;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f9fafb; /* Light mode default */
       }
       /* Global scrollbar hiding */
       * {
@@ -44,6 +46,10 @@
       }
       *::-webkit-scrollbar {
         display: none; /* Chrome, Safari and Opera */
+      }
+      /* Dark mode body fix */
+      .dark body {
+        background-color: #030712; /* Gray 950 */
       }
     </style>
   <script type="importmap">

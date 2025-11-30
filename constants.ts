@@ -15,15 +15,16 @@ export const CATEGORY_ICONS: Record<ServiceCategory, any> = {
 };
 
 // Unified theme: All icons use the app's primary purple colors
+// Added dark mode variants for better visibility on dark backgrounds
 export const CATEGORY_COLORS: Record<ServiceCategory, string> = {
-  [ServiceCategory.HOME_REPAIR]: "bg-purple-100 text-purple-700",
-  [ServiceCategory.CLEANING]: "bg-purple-100 text-purple-700",
-  [ServiceCategory.EDUCATION]: "bg-purple-100 text-purple-700",
-  [ServiceCategory.BEAUTY]: "bg-purple-100 text-purple-700",
-  [ServiceCategory.TRANSPORT]: "bg-purple-100 text-purple-700",
-  [ServiceCategory.GARDENING]: "bg-purple-100 text-purple-700",
-  [ServiceCategory.TECH]: "bg-purple-100 text-purple-700",
-  [ServiceCategory.OTHER]: "bg-purple-100 text-purple-700"
+  [ServiceCategory.HOME_REPAIR]: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  [ServiceCategory.CLEANING]: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  [ServiceCategory.EDUCATION]: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  [ServiceCategory.BEAUTY]: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  [ServiceCategory.TRANSPORT]: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  [ServiceCategory.GARDENING]: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  [ServiceCategory.TECH]: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300",
+  [ServiceCategory.OTHER]: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300"
 };
 
 export const CATEGORY_IMAGES: Record<ServiceCategory, string> = {
