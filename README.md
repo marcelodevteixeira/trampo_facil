@@ -59,4 +59,5 @@ Siga os passos abaixo para rodar o projeto em sua máquina:
     Abra o navegador no endereço indicado (geralmente `http://localhost:3000` ou `http://localhost:5173`).
 
 ---
-Desenvolvido como parte de projeto acadêmico focado em Engenharia de Software e Impacto Social.
+Desenvolvido por Marcelo Teixeira
+Projeto acadêmico focado em Engenharia de Software e Impacto Social.
