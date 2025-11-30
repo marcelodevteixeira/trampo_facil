@@ -14,16 +14,16 @@ export const CATEGORY_ICONS: Record<ServiceCategory, any> = {
   [ServiceCategory.OTHER]: MoreHorizontal
 };
 
-// Kept relatively neutral or matching standard category colors, but can be overridden by UI theme
+// Unified theme: All icons use the app's primary purple colors
 export const CATEGORY_COLORS: Record<ServiceCategory, string> = {
-  [ServiceCategory.HOME_REPAIR]: "bg-orange-100 text-orange-700",
-  [ServiceCategory.CLEANING]: "bg-blue-100 text-blue-700",
-  [ServiceCategory.EDUCATION]: "bg-yellow-100 text-yellow-700",
-  [ServiceCategory.BEAUTY]: "bg-pink-100 text-pink-700",
-  [ServiceCategory.TRANSPORT]: "bg-slate-100 text-slate-700",
-  [ServiceCategory.GARDENING]: "bg-green-100 text-green-700",
+  [ServiceCategory.HOME_REPAIR]: "bg-purple-100 text-purple-700",
+  [ServiceCategory.CLEANING]: "bg-purple-100 text-purple-700",
+  [ServiceCategory.EDUCATION]: "bg-purple-100 text-purple-700",
+  [ServiceCategory.BEAUTY]: "bg-purple-100 text-purple-700",
+  [ServiceCategory.TRANSPORT]: "bg-purple-100 text-purple-700",
+  [ServiceCategory.GARDENING]: "bg-purple-100 text-purple-700",
   [ServiceCategory.TECH]: "bg-purple-100 text-purple-700",
-  [ServiceCategory.OTHER]: "bg-gray-100 text-gray-700"
+  [ServiceCategory.OTHER]: "bg-purple-100 text-purple-700"
 };
 
 export const CATEGORY_IMAGES: Record<ServiceCategory, string> = {
