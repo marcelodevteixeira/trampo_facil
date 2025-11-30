@@ -6,7 +6,7 @@ import { AuthState, ServiceJob, ServiceCategory, UserProfile } from './types';
 import { calculateDistance, getCurrentLocation } from './services/geo';
 import { fetchServices, createService, supabase } from './services/supabase';
 import { CATEGORY_ICONS, CATEGORY_COLORS, CATEGORY_IMAGES } from './constants';
-import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ArrowRight, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon } from 'lucide-react';
+import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon } from 'lucide-react';
 
 // --- Pages ---
 
@@ -131,12 +131,7 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
     <Layout>
       <div className="space-y-6 relative min-h-[80vh]">
         
-        {/* Floating Action Button (FAB) */}
-        {!showList && (
-           <button className="fixed bottom-24 right-6 w-14 h-14 bg-primary rounded-full shadow-lg shadow-primary/40 flex items-center justify-center text-white z-40 active:scale-95 transition-transform">
-              <ArrowRight className="w-6 h-6" />
-           </button>
-        )}
+        {/* Floating Action Button (FAB) REMOVED */}
 
         {/* Hero / Header Section - COMPACT PURPLE BANNER */}
         {!showList && (
@@ -614,91 +609,77 @@ const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void }> = ({
     );
 };
 
-// App Main Component
+// 7. Main App Orchestrator
 const App: React.FC = () => {
-    const [auth, setAuth] = useState<AuthState>({
-        user: null,
-        loading: true,
-        session: null
-    });
-    const [userLocation, setUserLocation] = useState<{lat: number; lng: number} | null>(null);
+  const [auth, setAuth] = useState<AuthState>({
+    user: null, // Start logged out for demo, or change if persistent auth is implemented
+    loading: true,
+    session: null
+  });
 
-    useEffect(() => {
-        // Try to load from local storage
-        const storedAuth = localStorage.getItem('trampo_auth');
-        if (storedAuth) {
-            try {
-                setAuth(JSON.parse(storedAuth));
-            } catch (e) {
-                console.error("Failed to parse auth", e);
-                setAuth(prev => ({ ...prev, loading: false }));
-            }
-        } else {
-            setAuth(prev => ({ ...prev, loading: false }));
-        }
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
-        // Get location
-        getCurrentLocation()
-            .then(loc => {
-                setUserLocation({ lat: loc.latitude, lng: loc.longitude });
-            })
-            .catch(err => {
-                console.log("Location denied or error", err);
-                // Default location (Sao Paulo) if denied
-                setUserLocation({ lat: -23.550520, lng: -46.633308 }); 
-            });
-    }, []);
-
-    const handleLogin = (authData: AuthState) => {
-        setAuth(authData);
-        localStorage.setItem('trampo_auth', JSON.stringify(authData));
+  useEffect(() => {
+    // Simulate checking for existing session
+    const initAuth = async () => {
+      // In a real app: await supabase.auth.getSession()
+      // For demo, we just finish loading (starting as logged out).
+      setAuth(prev => ({ ...prev, loading: false }));
     };
 
-    const handleLogout = () => {
-        const newState = { user: null, loading: false, session: null };
-        setAuth(newState);
-        localStorage.removeItem('trampo_auth');
-    };
+    initAuth();
 
-    if (auth.loading) {
-        return (
-            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-                <Loader2 className="w-8 h-8 text-primary animate-spin" />
-            </div>
-        );
-    }
+    // Get Geo Location
+    getCurrentLocation()
+      .then(loc => {
+        setUserLocation({ lat: loc.latitude, lng: loc.longitude });
+      })
+      .catch((err) => {
+        console.warn("Location error or denied:", err);
+        // Fallback to Sao Paulo
+        setUserLocation({ lat: -23.550520, lng: -46.633308 });
+      });
+  }, []);
 
+  if (auth.loading) {
     return (
-        <HashRouter>
-            <Routes>
-                <Route path="/login" element={
-                    !auth.user ? <Login setAuth={handleLogin} /> : <Navigate to="/" />
-                } />
-                
-                <Route path="/" element={
-                    auth.user ? <Home user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" />
-                } />
-                
-                <Route path="/categories" element={
-                    auth.user ? <AllCategories /> : <Navigate to="/login" />
-                } />
-                
-                <Route path="/service/:id" element={
-                    auth.user ? <ServiceDetail /> : <Navigate to="/login" />
-                } />
-                
-                <Route path="/add" element={
-                    auth.user ? <AddService user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" />
-                } />
-                
-                <Route path="/profile" element={
-                    auth.user ? <Profile user={auth.user} onLogout={handleLogout} /> : <Navigate to="/login" />
-                } />
-                
-                <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-        </HashRouter>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="animate-spin text-primary w-8 h-8" />
+      </div>
     );
+  }
+
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/login" element={
+          !auth.user ? <Login setAuth={setAuth} /> : <Navigate to="/" replace />
+        } />
+        
+        <Route path="/" element={
+          auth.user ? <Home userLocation={userLocation} user={auth.user} /> : <Navigate to="/login" replace />
+        } />
+        
+        <Route path="/categories" element={
+          auth.user ? <AllCategories /> : <Navigate to="/login" replace />
+        } />
+
+        <Route path="/service/:id" element={
+          auth.user ? <ServiceDetail /> : <Navigate to="/login" replace />
+        } />
+        
+        <Route path="/add" element={
+          auth.user ? <AddService user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" replace />
+        } />
+        
+        <Route path="/profile" element={
+          auth.user ? <Profile user={auth.user} onLogout={() => setAuth({ user: null, loading: false, session: null })} /> : <Navigate to="/login" replace />
+        } />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </HashRouter>
+  );
 };
 
 export default App;

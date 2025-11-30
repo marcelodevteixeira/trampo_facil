@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, ChevronRight } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { ServiceJob } from '../types';
 import { CATEGORY_ICONS, CATEGORY_COLORS } from '../constants';
 
