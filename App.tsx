@@ -6,7 +6,7 @@ import { AuthState, ServiceJob, ServiceCategory, UserProfile } from './types';
 import { calculateDistance, getCurrentLocation } from './services/geo';
 import { fetchServices, createService, supabase } from './services/supabase';
 import { CATEGORY_ICONS, CATEGORY_COLORS, CATEGORY_IMAGES } from './constants';
-import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon, Moon, Sun, GraduationCap } from 'lucide-react';
+import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon, Moon, Sun, GraduationCap, Play, Clock } from 'lucide-react';
 
 // --- Interfaces for Props ---
 interface PageProps {
@@ -704,6 +704,41 @@ const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void } & Pag
 };
 
 // 7. Training Page (New)
+const MOCK_COURSES = [
+  {
+    id: 1,
+    title: "Marketing para Autônomos",
+    description: "Aprenda a usar o WhatsApp e Instagram para conquistar mais clientes na sua região.",
+    duration: "40 min",
+    category: "Marketing",
+    thumbnail: "https://images.pexels.com/photos/6476589/pexels-photo-6476589.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    id: 2,
+    title: "Precificação Descomplicada",
+    description: "Pare de perder dinheiro. Aprenda a calcular o preço justo do seu serviço.",
+    duration: "1h 10min",
+    category: "Finanças",
+    thumbnail: "https://images.pexels.com/photos/53621/calculator-calculation-insurance-finance-53621.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    id: 3,
+    title: "Excelência no Atendimento",
+    description: "Como fidelizar clientes e fazer eles te indicarem para os vizinhos.",
+    duration: "25 min",
+    category: "Vendas",
+    thumbnail: "https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=400"
+  },
+  {
+    id: 4,
+    title: "Segurança em Instalações",
+    description: "Proteja você e seu cliente. Normas básicas para eletricistas e reparos.",
+    duration: "55 min",
+    category: "Técnico",
+    thumbnail: "https://images.pexels.com/photos/8961065/pexels-photo-8961065.jpeg?auto=compress&cs=tinysrgb&w=400"
+  }
+];
+
 const Training: React.FC<PageProps> = ({ theme, toggleTheme }) => {
   const navigate = useNavigate();
   return (
@@ -712,20 +747,47 @@ const Training: React.FC<PageProps> = ({ theme, toggleTheme }) => {
          <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200">
             <ArrowLeft className="w-5 h-5" />
          </button>
-         <span className="font-bold text-gray-900 dark:text-white text-lg">Cursos e Treinamentos</span>
+         <span className="font-bold text-gray-900 dark:text-white text-lg">Cursos</span>
       </div>
       
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center justify-center text-center">
-        <div className="bg-primary/10 w-24 h-24 rounded-full flex items-center justify-center mb-6">
-            <GraduationCap className="w-12 h-12 text-primary" />
-        </div>
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Área de Aprendizado</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-xs">
-            Em breve você terá acesso a conteúdos exclusivos para aprimorar seus serviços e gestão.
-        </p>
-        <button disabled className="bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 font-bold py-3 px-8 rounded-xl cursor-not-allowed">
-            Aguarde Novidades
-        </button>
+      {/* Banner */}
+      <div className="bg-primary rounded-2xl p-6 text-white mb-6 relative overflow-hidden shadow-lg shadow-primary/20">
+         <div className="relative z-10">
+            <h2 className="text-2xl font-extrabold mb-1">Capacitação</h2>
+            <p className="text-purple-100 font-medium text-sm max-w-[200px]">Especialize-se e aumente sua renda com nossos minicursos gratuitos.</p>
+         </div>
+         <GraduationCap className="absolute right-[-10px] bottom-[-10px] w-32 h-32 text-purple-500/50 rotate-12" />
+      </div>
+
+      <h3 className="font-bold text-gray-900 dark:text-white text-lg mb-4">Minicursos Disponíveis</h3>
+
+      <div className="space-y-4 pb-6">
+        {MOCK_COURSES.map(course => (
+            <div key={course.id} className="bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 hover:shadow-md transition-all active:scale-[0.99] cursor-pointer group">
+                {/* Thumbnail with Play Overlay */}
+                <div className="w-28 h-24 bg-gray-200 rounded-xl bg-cover bg-center relative shrink-0 overflow-hidden" style={{ backgroundImage: `url(${course.thumbnail})` }}>
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                        <div className="w-8 h-8 bg-white/90 rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform">
+                            <Play className="w-4 h-4 text-primary fill-primary ml-0.5" />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-col justify-center flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1.5">
+                        <span className="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-[10px] font-bold uppercase rounded-md">
+                            {course.category}
+                        </span>
+                        <div className="flex items-center text-[10px] text-gray-400 font-bold">
+                            <Clock className="w-3 h-3 mr-1" />
+                            {course.duration}
+                        </div>
+                    </div>
+                    <h4 className="font-bold text-gray-900 dark:text-white text-sm leading-tight mb-1 line-clamp-2">{course.title}</h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2">{course.description}</p>
+                </div>
+            </div>
+        ))}
       </div>
     </Layout>
   );
