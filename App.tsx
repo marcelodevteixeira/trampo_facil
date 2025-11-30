@@ -139,7 +139,12 @@ const Training: React.FC = () => {
 };
 
 // 2. Home / Feed
-const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: UserProfile | null }> = ({ userLocation, user }) => {
+const Home: React.FC<{ 
+    userLocation: { lat: number; lng: number } | null; 
+    user: UserProfile | null;
+    theme: string;
+    toggleTheme: () => void;
+}> = ({ userLocation, user, theme, toggleTheme }) => {
   const [services, setServices] = useState<ServiceJob[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('');
@@ -214,19 +219,28 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
     <Layout>
       <div className="space-y-6 relative min-h-[80vh]">
         
-        {/* Hero / Header Section - COMPACT PURPLE BANNER */}
+        {/* Hero / Header Section - COMPACT PURPLE BANNER WITH THEME TOGGLE */}
         {!showList && (
-            <div className="bg-primary rounded-2xl p-4 mb-4 text-white shadow-lg shadow-primary/20 relative overflow-hidden flex items-center">
+            <div className="bg-primary rounded-2xl p-4 mb-4 text-white shadow-lg shadow-primary/20 relative overflow-hidden flex items-center justify-between">
                 {/* Decorative background blurs */}
                 <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
                 <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/10 rounded-full -ml-8 -mb-8 blur-lg"></div>
 
-                <div className="relative z-10">
-                    <span className="text-purple-200 text-sm font-medium mr-1">Olá,</span>
+                <div className="relative z-10 flex flex-col justify-center">
+                    <span className="text-purple-200 text-sm font-medium">Olá,</span>
                     <span className="text-xl font-extrabold tracking-tight text-white leading-tight">
                         {user?.name ? user.name.split(' ')[0] : 'Visitante'}
                     </span>
                 </div>
+
+                {/* Theme Toggle Button */}
+                <button 
+                    onClick={toggleTheme}
+                    className="relative z-10 p-2.5 rounded-full bg-white/20 hover:bg-white/30 transition-all active:scale-95 text-white backdrop-blur-sm"
+                    aria-label="Alternar tema"
+                >
+                    {theme === 'dark' ? <Moon className="w-5 h-5" fill="currentColor" /> : <Sun className="w-5 h-5" />}
+                </button>
             </div>
         )}
 
@@ -689,7 +703,7 @@ const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
        </div>
 
        <div className="bg-primary p-5 rounded-3xl mb-8 shadow-xl shadow-primary/20 rotate-0 transform hover:rotate-0 transition-all flex items-center justify-center mx-auto">
-          {/* Reuse logo in small version, without orbits for simplicity in small size */}
+          {/* Reuse logo in small version */}
           <div className="w-16 h-16">
              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                 <mask id="small-cutout-mask">
@@ -897,13 +911,17 @@ const App: React.FC = () => {
                 } />
                 
                 <Route path="/" element={
-                    auth.user ? <Home user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" />
+                    auth.user ? <Home user={auth.user} userLocation={userLocation} theme={theme} toggleTheme={toggleTheme} /> : <Navigate to="/login" />
                 } />
                 
                 <Route path="/categories" element={
                     auth.user ? <AllCategories /> : <Navigate to="/login" />
                 } />
                 
+                <Route path="/training" element={
+                    auth.user ? <Training /> : <Navigate to="/login" />
+                } />
+
                 <Route path="/service/:id" element={
                     auth.user ? <ServiceDetail /> : <Navigate to="/login" />
                 } />
