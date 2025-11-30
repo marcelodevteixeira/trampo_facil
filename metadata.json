@@ -1,0 +1,7 @@
+{
+  "name": "TrampoFácil",
+  "description": "Conectando pessoas a oportunidades reais.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
