@@ -6,12 +6,18 @@ import { AuthState, ServiceJob, ServiceCategory, UserProfile } from './types';
 import { calculateDistance, getCurrentLocation } from './services/geo';
 import { fetchServices, createService, supabase } from './services/supabase';
 import { CATEGORY_ICONS, CATEGORY_COLORS, CATEGORY_IMAGES } from './constants';
-import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon, Moon, Sun, GraduationCap, PlayCircle } from 'lucide-react';
+import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon, Moon, Sun, GraduationCap } from 'lucide-react';
+
+// --- Interfaces for Props ---
+interface PageProps {
+  theme: string;
+  toggleTheme: () => void;
+}
 
 // --- Pages ---
 
 // 1. All Categories Page
-const AllCategories: React.FC = () => {
+const AllCategories: React.FC<PageProps> = ({ theme, toggleTheme }) => {
   const navigate = useNavigate();
 
   const handleSelect = (cat: string) => {
@@ -20,7 +26,7 @@ const AllCategories: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout theme={theme} toggleTheme={toggleTheme}>
       <div className="flex items-center gap-2 mb-6">
          <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200">
             <ArrowLeft className="w-5 h-5" />
@@ -55,96 +61,8 @@ const AllCategories: React.FC = () => {
   );
 };
 
-// 1.1 Training Page (Capacitação)
-const Training: React.FC = () => {
-  const courses = [
-    { 
-      id: 1, 
-      title: 'Marketing para Autônomos', 
-      desc: 'Aprenda a divulgar seus serviços nas redes sociais e atrair mais clientes.', 
-      duration: '2h 15m', 
-      level: 'Iniciante',
-      image: 'https://images.pexels.com/photos/905163/pexels-photo-905163.jpeg?auto=compress&cs=tinysrgb&w=400' 
-    },
-    { 
-      id: 2, 
-      title: 'Finanças Pessoais Básicas', 
-      desc: 'Como separar o dinheiro de casa do dinheiro do trabalho e precificar corretamente.', 
-      duration: '1h 45m', 
-      level: 'Básico',
-      image: 'https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg?auto=compress&cs=tinysrgb&w=400' 
-    },
-    { 
-      id: 3, 
-      title: 'Segurança no Trabalho', 
-      desc: 'Normas essenciais de segurança para eletricistas e profissionais de reparos.', 
-      duration: '3h', 
-      level: 'Intermediário',
-      image: 'https://images.pexels.com/photos/8961065/pexels-photo-8961065.jpeg?auto=compress&cs=tinysrgb&w=400' 
-    },
-    { 
-      id: 4, 
-      title: 'Atendimento de Excelência', 
-      desc: 'Técnicas para fidelizar clientes e conseguir mais indicações.', 
-      duration: '1h', 
-      level: 'Todos',
-      image: 'https://images.pexels.com/photos/8867431/pexels-photo-8867431.jpeg?auto=compress&cs=tinysrgb&w=400' 
-    }
-  ];
-
-  return (
-    <Layout>
-       <div className="mb-6">
-        <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Capacitação</h2>
-        <p className="text-gray-500 dark:text-gray-400 font-medium text-sm">Minicursos gratuitos para impulsionar seu negócio.</p>
-      </div>
-
-      <div className="space-y-4">
-        {courses.map(course => (
-            <div key={course.id} className="bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 hover:shadow-md transition-all cursor-pointer group">
-                <div className="w-24 h-24 rounded-xl flex-shrink-0 bg-gray-200 overflow-hidden relative">
-                    <img src={course.image} alt={course.title} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <PlayCircle className="w-8 h-8 text-white" fill="rgba(0,0,0,0.5)" />
-                    </div>
-                </div>
-                <div className="flex-1 flex flex-col justify-center">
-                    <div className="flex justify-between items-start">
-                        <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-tight mb-1">{course.title}</h3>
-                    </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-2">{course.desc}</p>
-                    <div className="flex items-center gap-2 mt-auto">
-                        <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md flex items-center gap-1">
-                            <GraduationCap className="w-3 h-3" />
-                            {course.level}
-                        </span>
-                        <span className="text-[10px] font-medium text-gray-400 flex items-center gap-1">
-                            • {course.duration}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        ))}
-      </div>
-      
-      <div className="mt-8 bg-gradient-to-r from-primary to-purple-500 rounded-2xl p-6 text-white text-center shadow-lg shadow-primary/20">
-          <h3 className="font-bold text-lg mb-2">Quer sugerir um tema?</h3>
-          <p className="text-sm text-purple-100 mb-4">Estamos sempre buscando novos conteúdos para ajudar você a crescer.</p>
-          <button className="bg-white text-primary font-bold py-2 px-6 rounded-full text-sm hover:bg-gray-50 transition-colors">
-              Enviar Sugestão
-          </button>
-      </div>
-    </Layout>
-  )
-};
-
 // 2. Home / Feed
-const Home: React.FC<{ 
-    userLocation: { lat: number; lng: number } | null; 
-    user: UserProfile | null;
-    theme: string;
-    toggleTheme: () => void;
-}> = ({ userLocation, user, theme, toggleTheme }) => {
+const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: UserProfile | null } & PageProps> = ({ userLocation, user, theme, toggleTheme }) => {
   const [services, setServices] = useState<ServiceJob[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('');
@@ -216,31 +134,22 @@ const Home: React.FC<{
   }, []);
 
   return (
-    <Layout>
+    <Layout theme={theme} toggleTheme={toggleTheme}>
       <div className="space-y-6 relative min-h-[80vh]">
         
-        {/* Hero / Header Section - COMPACT PURPLE BANNER WITH THEME TOGGLE */}
+        {/* Hero / Header Section - COMPACT PURPLE BANNER */}
         {!showList && (
-            <div className="bg-primary rounded-2xl p-4 mb-4 text-white shadow-lg shadow-primary/20 relative overflow-hidden flex items-center justify-between">
+            <div className="bg-primary rounded-2xl p-4 mb-4 text-white shadow-lg shadow-primary/20 relative overflow-hidden flex items-center">
                 {/* Decorative background blurs */}
                 <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
                 <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/10 rounded-full -ml-8 -mb-8 blur-lg"></div>
 
-                <div className="relative z-10 flex flex-col justify-center">
-                    <span className="text-purple-200 text-sm font-medium">Olá,</span>
+                <div className="relative z-10">
+                    <span className="text-purple-200 text-sm font-medium mr-1">Olá,</span>
                     <span className="text-xl font-extrabold tracking-tight text-white leading-tight">
                         {user?.name ? user.name.split(' ')[0] : 'Visitante'}
                     </span>
                 </div>
-
-                {/* Theme Toggle Button */}
-                <button 
-                    onClick={toggleTheme}
-                    className="relative z-10 p-2.5 rounded-full bg-white/20 hover:bg-white/30 transition-all active:scale-95 text-white backdrop-blur-sm"
-                    aria-label="Alternar tema"
-                >
-                    {theme === 'dark' ? <Moon className="w-5 h-5" fill="currentColor" /> : <Sun className="w-5 h-5" />}
-                </button>
             </div>
         )}
 
@@ -356,7 +265,7 @@ const Home: React.FC<{
 };
 
 // 3. Service Details
-const ServiceDetail: React.FC = () => {
+const ServiceDetail: React.FC<PageProps> = ({ theme, toggleTheme }) => {
   const { id } = useParams();
   const [service, setService] = useState<ServiceJob | null>(null);
   const [loading, setLoading] = useState(true);
@@ -373,8 +282,8 @@ const ServiceDetail: React.FC = () => {
     load();
   }, [id]);
 
-  if (loading) return <Layout><div className="flex justify-center pt-20"><Loader2 className="animate-spin text-primary" /></div></Layout>;
-  if (!service) return <Layout><div className="text-center pt-20 font-bold text-gray-500">Serviço não encontrado.</div></Layout>;
+  if (loading) return <Layout theme={theme} toggleTheme={toggleTheme}><div className="flex justify-center pt-20"><Loader2 className="animate-spin text-primary" /></div></Layout>;
+  if (!service) return <Layout theme={theme} toggleTheme={toggleTheme}><div className="text-center pt-20 font-bold text-gray-500">Serviço não encontrado.</div></Layout>;
 
   const Icon = CATEGORY_ICONS[service.category];
   
@@ -389,7 +298,7 @@ const ServiceDetail: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout theme={theme} toggleTheme={toggleTheme}>
       <div className="flex items-center gap-2 mb-4">
          <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200">
             <ArrowLeft className="w-5 h-5" />
@@ -459,7 +368,7 @@ const ServiceDetail: React.FC = () => {
 };
 
 // 4. Add Service
-const AddService: React.FC<{ user: UserProfile | null; userLocation: any }> = ({ user, userLocation }) => {
+const AddService: React.FC<{ user: UserProfile | null; userLocation: any } & PageProps> = ({ user, userLocation, theme, toggleTheme }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
@@ -498,7 +407,7 @@ const AddService: React.FC<{ user: UserProfile | null; userLocation: any }> = ({
   };
 
   return (
-    <Layout>
+    <Layout theme={theme} toggleTheme={toggleTheme}>
       <div className="mb-6">
         <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Anunciar Serviço</h2>
         <p className="text-gray-500 dark:text-gray-400 font-medium text-sm">Divulgue seu trabalho para a vizinhança.</p>
@@ -599,24 +508,11 @@ const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
     }, 1000);
   };
 
-  // High-Resolution Vector Cutout Logo - HOUSE + TF Monogram + Orbits
+  // High-Resolution Vector Cutout Logo - HOUSE + TF Monogram
   const FinalLogo = ({ className = "w-48 h-48" }) => (
     <div className={`relative flex items-center justify-center ${className}`}>
-      {/* Background Orbits */}
-      <div className="absolute inset-0 animate-spin-slow" style={{ animationDuration: '20s' }}>
-         <svg viewBox="0 0 200 200" className="w-full h-full opacity-60">
-            {/* Orbit Ring */}
-            <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="white" strokeWidth="1" transform="rotate(-45 100 100)" />
-            <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="white" strokeWidth="1" transform="rotate(45 100 100)" />
-            {/* Satellite Dots */}
-            <circle cx="100" cy="10" r="4" fill="white" transform="rotate(-45 100 100)" />
-            <circle cx="100" cy="190" r="4" fill="white" transform="rotate(-45 100 100)" />
-            <circle cx="10" cy="100" r="4" fill="white" transform="rotate(45 100 100)" />
-         </svg>
-      </div>
-
       {/* Main Logo: House + TF Cutout */}
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3/4 h-3/4 drop-shadow-2xl relative z-10">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-2xl relative z-10">
         <defs>
           <mask id="cutout-mask">
             {/* Base: White (Visible) - House Shape */}
@@ -625,24 +521,11 @@ const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
             
             {/* Cutout: Joined TF Monogram (Black = Transparent) */}
             {/* T part */}
-            <path d="M7 10 H13 V18 H10 V10 Z" fill="black" /> {/* T Stem */}
-            <rect x="6" y="7" width="12" height="3" fill="black" /> {/* T Top Bar */}
+            <rect x="10" y="8" width="4" height="10" fill="black" /> {/* Stem */}
+            <rect x="6" y="8" width="12" height="3" fill="black" /> {/* Top Bar */}
             
-            {/* F part */}
-            <rect x="14" y="11" width="4" height="2.5" fill="black" /> {/* F Middle Bar */}
-            <rect x="14" y="7" width="4" height="3" fill="black" /> {/* F Top Bar Extension */}
-            {/* Small vertical line to connect F if needed, but the current layout implies F shares T's stem or is next to it */}
-            
-            {/* Refined TF Monogram for Clarity */}
-            {/* T */}
-            <rect x="6" y="8" width="12" height="2.5" fill="black" /> {/* Top bar */}
-            <rect x="10.5" y="8" width="3" height="10" fill="black" /> {/* Stem */}
-            
-            {/* F (Right side of T) */}
-            <rect x="13.5" y="8" width="4" height="2.5" fill="black" /> {/* Top bar extension */}
-            <rect x="13.5" y="12" width="3.5" height="2.5" fill="black" /> {/* Middle bar */}
-            
-            {/* Dot/Period in middle as seen in image sometimes? No, let's keep clean TF */}
+            {/* F part (Right side extension) */}
+            <rect x="14" y="13" width="4" height="2.5" fill="black" /> {/* F Middle Bar */}
           </mask>
         </defs>
         
@@ -705,18 +588,7 @@ const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
        <div className="bg-primary p-5 rounded-3xl mb-8 shadow-xl shadow-primary/20 rotate-0 transform hover:rotate-0 transition-all flex items-center justify-center mx-auto">
           {/* Reuse logo in small version */}
           <div className="w-16 h-16">
-             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                <mask id="small-cutout-mask">
-                    <rect width="24" height="24" fill="black" />
-                    <path d="M2 12L12 2L22 12H19V21H5V12H2Z" fill="white" />
-                    {/* Simplified TF Cutout for small icon */}
-                    <rect x="6" y="8" width="12" height="2.5" fill="black" />
-                    <rect x="10.5" y="8" width="3" height="10" fill="black" />
-                    <rect x="13.5" y="8" width="4" height="2.5" fill="black" />
-                    <rect x="13.5" y="12" width="3.5" height="2.5" fill="black" />
-                </mask>
-                <rect width="24" height="24" fill="white" mask="url(#small-cutout-mask)" />
-             </svg>
+             <FinalLogo className="w-full h-full" />
           </div>
        </div>
        
@@ -738,12 +610,12 @@ const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
 };
 
 // 6. Profile
-const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void; theme: string; toggleTheme: () => void }> = ({ user, onLogout, theme, toggleTheme }) => {
+const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void } & PageProps> = ({ user, onLogout, theme, toggleTheme }) => {
     const [settingsOpen, setSettingsOpen] = useState(false);
     const [radius, setRadius] = useState(30);
 
     return (
-        <Layout>
+        <Layout theme={theme} toggleTheme={toggleTheme}>
             <div className="flex flex-col items-center py-10">
                 <div className="w-24 h-24 bg-primary text-white rounded-full flex items-center justify-center text-3xl font-bold mb-4 shadow-lg shadow-primary/30 border-4 border-white dark:border-gray-800 transition-colors">
                     {user?.name?.charAt(0) || 'U'}
@@ -780,7 +652,7 @@ const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void; theme:
                     {settingsOpen && (
                         <div className="p-5 pt-0 bg-white dark:bg-gray-800 border-t border-gray-50 dark:border-gray-700">
                             
-                            {/* Theme Toggle */}
+                            {/* Theme Toggle (Inside Settings too) */}
                             <div className="flex justify-between items-center py-4 border-b border-gray-100 dark:border-gray-700">
                                 <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 font-medium text-xs uppercase tracking-wide">
                                     {theme === 'dark' ? <Moon className="w-4 h-4 text-purple-400" /> : <Sun className="w-4 h-4 text-orange-400" />}
@@ -829,6 +701,34 @@ const Profile: React.FC<{ user: UserProfile | null; onLogout: () => void; theme:
             </button>
         </Layout>
     );
+};
+
+// 7. Training Page (New)
+const Training: React.FC<PageProps> = ({ theme, toggleTheme }) => {
+  const navigate = useNavigate();
+  return (
+    <Layout theme={theme} toggleTheme={toggleTheme}>
+      <div className="flex items-center gap-2 mb-6">
+         <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200">
+            <ArrowLeft className="w-5 h-5" />
+         </button>
+         <span className="font-bold text-gray-900 dark:text-white text-lg">Cursos e Treinamentos</span>
+      </div>
+      
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col items-center justify-center text-center">
+        <div className="bg-primary/10 w-24 h-24 rounded-full flex items-center justify-center mb-6">
+            <GraduationCap className="w-12 h-12 text-primary" />
+        </div>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Área de Aprendizado</h2>
+        <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-xs">
+            Em breve você terá acesso a conteúdos exclusivos para aprimorar seus serviços e gestão.
+        </p>
+        <button disabled className="bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 font-bold py-3 px-8 rounded-xl cursor-not-allowed">
+            Aguarde Novidades
+        </button>
+      </div>
+    </Layout>
+  );
 };
 
 // App Main Component
@@ -915,19 +815,19 @@ const App: React.FC = () => {
                 } />
                 
                 <Route path="/categories" element={
-                    auth.user ? <AllCategories /> : <Navigate to="/login" />
+                    auth.user ? <AllCategories theme={theme} toggleTheme={toggleTheme} /> : <Navigate to="/login" />
                 } />
                 
                 <Route path="/training" element={
-                    auth.user ? <Training /> : <Navigate to="/login" />
+                    auth.user ? <Training theme={theme} toggleTheme={toggleTheme} /> : <Navigate to="/login" />
                 } />
 
                 <Route path="/service/:id" element={
-                    auth.user ? <ServiceDetail /> : <Navigate to="/login" />
+                    auth.user ? <ServiceDetail theme={theme} toggleTheme={toggleTheme} /> : <Navigate to="/login" />
                 } />
                 
                 <Route path="/add" element={
-                    auth.user ? <AddService user={auth.user} userLocation={userLocation} /> : <Navigate to="/login" />
+                    auth.user ? <AddService user={auth.user} userLocation={userLocation} theme={theme} toggleTheme={toggleTheme} /> : <Navigate to="/login" />
                 } />
                 
                 <Route path="/profile" element={

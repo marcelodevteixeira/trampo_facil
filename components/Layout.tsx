@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, PlusCircle, User, MapPin, Hammer, Home as HomeIcon, GraduationCap } from 'lucide-react';
+import { Home, PlusCircle, User, MapPin, Hammer, Home as HomeIcon, GraduationCap, Sun, Moon } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
+  theme?: string;
+  toggleTheme?: () => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children, theme, toggleTheme }) => {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -33,12 +35,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </div>
             <h1 className="text-xl font-extrabold text-secondary dark:text-white tracking-tight">Trampo<span className="text-primary">Fácil</span></h1>
           </div>
-          {/* Only show add button on header if not on add page */}
-          {!isActive('/add') && (
-            <Link to="/add" className="text-sm font-bold text-primary dark:text-purple-400 border border-primary/20 dark:border-purple-500/30 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-4 py-1.5 rounded-full transition-colors">
-              Anunciar
-            </Link>
-          )}
+          
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle Button */}
+            {toggleTheme && (
+              <button 
+                onClick={toggleTheme}
+                className="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
+                aria-label="Alternar tema"
+              >
+                {theme === 'dark' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+              </button>
+            )}
+
+            {/* Only show add button on header if not on add page */}
+            {!isActive('/add') && (
+              <Link to="/add" className="text-sm font-bold text-primary dark:text-purple-400 border border-primary/20 dark:border-purple-500/30 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-4 py-1.5 rounded-full transition-colors">
+                Anunciar
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 
