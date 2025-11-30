@@ -6,7 +6,7 @@ import { AuthState, ServiceJob, ServiceCategory, UserProfile } from './types';
 import { calculateDistance, getCurrentLocation } from './services/geo';
 import { fetchServices, createService, supabase } from './services/supabase';
 import { CATEGORY_ICONS, CATEGORY_COLORS, CATEGORY_IMAGES } from './constants';
-import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon, Moon, Sun } from 'lucide-react';
+import { LogOut, Phone, MessageCircle, MapPin, Search, Loader2, ArrowLeft, ChevronDown, ChevronRight, SlidersHorizontal, Grid, Hammer, Home as HomeIcon, Moon, Sun, GraduationCap, PlayCircle } from 'lucide-react';
 
 // --- Pages ---
 
@@ -53,6 +53,89 @@ const AllCategories: React.FC = () => {
       </div>
     </Layout>
   );
+};
+
+// 1.1 Training Page (Capacitação)
+const Training: React.FC = () => {
+  const courses = [
+    { 
+      id: 1, 
+      title: 'Marketing para Autônomos', 
+      desc: 'Aprenda a divulgar seus serviços nas redes sociais e atrair mais clientes.', 
+      duration: '2h 15m', 
+      level: 'Iniciante',
+      image: 'https://images.pexels.com/photos/905163/pexels-photo-905163.jpeg?auto=compress&cs=tinysrgb&w=400' 
+    },
+    { 
+      id: 2, 
+      title: 'Finanças Pessoais Básicas', 
+      desc: 'Como separar o dinheiro de casa do dinheiro do trabalho e precificar corretamente.', 
+      duration: '1h 45m', 
+      level: 'Básico',
+      image: 'https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg?auto=compress&cs=tinysrgb&w=400' 
+    },
+    { 
+      id: 3, 
+      title: 'Segurança no Trabalho', 
+      desc: 'Normas essenciais de segurança para eletricistas e profissionais de reparos.', 
+      duration: '3h', 
+      level: 'Intermediário',
+      image: 'https://images.pexels.com/photos/8961065/pexels-photo-8961065.jpeg?auto=compress&cs=tinysrgb&w=400' 
+    },
+    { 
+      id: 4, 
+      title: 'Atendimento de Excelência', 
+      desc: 'Técnicas para fidelizar clientes e conseguir mais indicações.', 
+      duration: '1h', 
+      level: 'Todos',
+      image: 'https://images.pexels.com/photos/8867431/pexels-photo-8867431.jpeg?auto=compress&cs=tinysrgb&w=400' 
+    }
+  ];
+
+  return (
+    <Layout>
+       <div className="mb-6">
+        <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white">Capacitação</h2>
+        <p className="text-gray-500 dark:text-gray-400 font-medium text-sm">Minicursos gratuitos para impulsionar seu negócio.</p>
+      </div>
+
+      <div className="space-y-4">
+        {courses.map(course => (
+            <div key={course.id} className="bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm border border-gray-100 dark:border-gray-700 flex gap-4 hover:shadow-md transition-all cursor-pointer group">
+                <div className="w-24 h-24 rounded-xl flex-shrink-0 bg-gray-200 overflow-hidden relative">
+                    <img src={course.image} alt={course.title} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <PlayCircle className="w-8 h-8 text-white" fill="rgba(0,0,0,0.5)" />
+                    </div>
+                </div>
+                <div className="flex-1 flex flex-col justify-center">
+                    <div className="flex justify-between items-start">
+                        <h3 className="font-bold text-gray-900 dark:text-white text-sm leading-tight mb-1">{course.title}</h3>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 mb-2">{course.desc}</p>
+                    <div className="flex items-center gap-2 mt-auto">
+                        <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-md flex items-center gap-1">
+                            <GraduationCap className="w-3 h-3" />
+                            {course.level}
+                        </span>
+                        <span className="text-[10px] font-medium text-gray-400 flex items-center gap-1">
+                            • {course.duration}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        ))}
+      </div>
+      
+      <div className="mt-8 bg-gradient-to-r from-primary to-purple-500 rounded-2xl p-6 text-white text-center shadow-lg shadow-primary/20">
+          <h3 className="font-bold text-lg mb-2">Quer sugerir um tema?</h3>
+          <p className="text-sm text-purple-100 mb-4">Estamos sempre buscando novos conteúdos para ajudar você a crescer.</p>
+          <button className="bg-white text-primary font-bold py-2 px-6 rounded-full text-sm hover:bg-gray-50 transition-colors">
+              Enviar Sugestão
+          </button>
+      </div>
+    </Layout>
+  )
 };
 
 // 2. Home / Feed
