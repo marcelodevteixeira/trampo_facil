@@ -131,8 +131,6 @@ const Home: React.FC<{ userLocation: { lat: number; lng: number } | null; user: 
     <Layout>
       <div className="space-y-6 relative min-h-[80vh]">
         
-        {/* Floating Action Button (FAB) Removed */}
-
         {/* Hero / Header Section - COMPACT PURPLE BANNER */}
         {!showList && (
             <div className="bg-primary rounded-2xl p-4 mb-4 text-white shadow-lg shadow-primary/20 relative overflow-hidden flex items-center">
@@ -484,7 +482,7 @@ const AddService: React.FC<{ user: UserProfile | null; userLocation: any }> = ({
   );
 };
 
-// 5. Auth Pages (Updated with Welcome Screen)
+// 5. Auth Pages (Updated with Welcome Screen and Custom Logo)
 const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -504,6 +502,59 @@ const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
     }, 1000);
   };
 
+  // High-Resolution Vector Cutout Logo - HOUSE + TF Monogram + Orbits
+  const FinalLogo = ({ className = "w-48 h-48" }) => (
+    <div className={`relative flex items-center justify-center ${className}`}>
+      {/* Background Orbits */}
+      <div className="absolute inset-0 animate-spin-slow" style={{ animationDuration: '20s' }}>
+         <svg viewBox="0 0 200 200" className="w-full h-full opacity-60">
+            {/* Orbit Ring */}
+            <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="white" strokeWidth="1" transform="rotate(-45 100 100)" />
+            <ellipse cx="100" cy="100" rx="90" ry="30" fill="none" stroke="white" strokeWidth="1" transform="rotate(45 100 100)" />
+            {/* Satellite Dots */}
+            <circle cx="100" cy="10" r="4" fill="white" transform="rotate(-45 100 100)" />
+            <circle cx="100" cy="190" r="4" fill="white" transform="rotate(-45 100 100)" />
+            <circle cx="10" cy="100" r="4" fill="white" transform="rotate(45 100 100)" />
+         </svg>
+      </div>
+
+      {/* Main Logo: House + TF Cutout */}
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-3/4 h-3/4 drop-shadow-2xl relative z-10">
+        <defs>
+          <mask id="cutout-mask">
+            {/* Base: White (Visible) - House Shape */}
+            <rect width="24" height="24" fill="black" />
+            <path d="M2 12L12 2L22 12H19V21H5V12H2Z" fill="white" />
+            
+            {/* Cutout: Joined TF Monogram (Black = Transparent) */}
+            {/* T part */}
+            <path d="M7 10 H13 V18 H10 V10 Z" fill="black" /> {/* T Stem */}
+            <rect x="6" y="7" width="12" height="3" fill="black" /> {/* T Top Bar */}
+            
+            {/* F part */}
+            <rect x="14" y="11" width="4" height="2.5" fill="black" /> {/* F Middle Bar */}
+            <rect x="14" y="7" width="4" height="3" fill="black" /> {/* F Top Bar Extension */}
+            {/* Small vertical line to connect F if needed, but the current layout implies F shares T's stem or is next to it */}
+            
+            {/* Refined TF Monogram for Clarity */}
+            {/* T */}
+            <rect x="6" y="8" width="12" height="2.5" fill="black" /> {/* Top bar */}
+            <rect x="10.5" y="8" width="3" height="10" fill="black" /> {/* Stem */}
+            
+            {/* F (Right side of T) */}
+            <rect x="13.5" y="8" width="4" height="2.5" fill="black" /> {/* Top bar extension */}
+            <rect x="13.5" y="12" width="3.5" height="2.5" fill="black" /> {/* Middle bar */}
+            
+            {/* Dot/Period in middle as seen in image sometimes? No, let's keep clean TF */}
+          </mask>
+        </defs>
+        
+        {/* Final Render */}
+        <rect width="24" height="24" fill="white" mask="url(#cutout-mask)" />
+      </svg>
+    </div>
+  );
+
   // Welcome Screen
   if (!showInput) {
       return (
@@ -517,15 +568,10 @@ const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
               </div>
 
               <div className="flex-1 flex flex-col items-center justify-center z-10 w-full animate-fade-in-up">
-                  <div className="mb-8 transform rotate-3 drop-shadow-2xl">
-                      <div className="relative w-32 h-32 flex items-center justify-center">
-                           {/* White House Icon */}
-                           <HomeIcon className="w-32 h-32 text-white absolute" strokeWidth={0} fill="white" />
-                           {/* 'Cutout' Hammer in Background Color */}
-                           <Hammer className="w-16 h-16 text-purple-700 absolute -bottom-2 -right-2 transform rotate-12" fill="currentColor" strokeWidth={0} />
-                      </div>
+                  <div className="mb-10 transform drop-shadow-2xl">
+                      <FinalLogo />
                   </div>
-                  <h1 className="text-4xl font-extrabold tracking-tight mb-2 drop-shadow-md">TrampoFácil</h1>
+                  <h1 className="text-5xl font-extrabold tracking-tight mb-2 drop-shadow-md">TrampoFácil</h1>
                   <p className="text-purple-100/90 font-medium max-w-[240px] leading-relaxed text-lg tracking-wide">
                     Conectando pessoas a oportunidades reais.
                   </p>
@@ -559,17 +605,28 @@ const Login: React.FC<{ setAuth: any }> = ({ setAuth }) => {
            </button>
        </div>
 
-       <div className="bg-primary p-4 rounded-2xl mb-8 shadow-xl shadow-primary/20 rotate-3 transform hover:rotate-0 transition-all">
-          <div className="relative w-8 h-8 flex items-center justify-center">
-                <HomeIcon className="w-8 h-8 text-white absolute" strokeWidth={2.5} />
-                <Hammer className="w-4 h-4 text-white absolute -bottom-1 -right-1 fill-white" />
+       <div className="bg-primary p-5 rounded-3xl mb-8 shadow-xl shadow-primary/20 rotate-0 transform hover:rotate-0 transition-all flex items-center justify-center mx-auto">
+          {/* Reuse logo in small version, without orbits for simplicity in small size */}
+          <div className="w-16 h-16">
+             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+                <mask id="small-cutout-mask">
+                    <rect width="24" height="24" fill="black" />
+                    <path d="M2 12L12 2L22 12H19V21H5V12H2Z" fill="white" />
+                    {/* Simplified TF Cutout for small icon */}
+                    <rect x="6" y="8" width="12" height="2.5" fill="black" />
+                    <rect x="10.5" y="8" width="3" height="10" fill="black" />
+                    <rect x="13.5" y="8" width="4" height="2.5" fill="black" />
+                    <rect x="13.5" y="12" width="3.5" height="2.5" fill="black" />
+                </mask>
+                <rect width="24" height="24" fill="white" mask="url(#small-cutout-mask)" />
+             </svg>
           </div>
        </div>
        
        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">Bem-vindo</h1>
        <p className="text-gray-500 dark:text-gray-400 mb-10 max-w-xs font-medium">Insira seus dados para continuar.</p>
 
-       <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4 relative z-10">
+       <form onSubmit={handleLogin} className="w-full max-w-sm space-y-4 relative z-10 mx-auto">
           <div className="space-y-4">
             <input type="email" placeholder="E-mail" className="w-full p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-gray-900 transition-all" required />
             <input type="password" placeholder="Senha" className="w-full p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white outline-none focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-gray-900 transition-all" required />

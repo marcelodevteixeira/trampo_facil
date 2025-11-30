@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, PlusCircle, User, MapPin, Hammer, Home as HomeIcon } from 'lucide-react';
+import { Home, PlusCircle, User } from 'lucide-react';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -17,9 +17,20 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <header className="bg-white dark:bg-gray-900 shadow-sm sticky top-0 z-20 border-b border-transparent dark:border-gray-800 transition-colors duration-200">
         <div className="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="bg-primary p-1.5 rounded-lg flex items-center justify-center relative w-8 h-8">
-               <HomeIcon className="text-white w-5 h-5 absolute" strokeWidth={2.5} />
-               <Hammer className="w-3 h-3 text-white absolute bottom-1 right-1 fill-white" />
+            {/* Brand Logo - White House with TF Monogram Overlay in Primary Color */}
+            <div className="bg-primary p-1.5 rounded-lg flex items-center justify-center relative w-8 h-8 shrink-0 overflow-hidden">
+               <svg viewBox="0 0 24 24" className="w-full h-full">
+                  {/* House Shape */}
+                  <path d="M2 12L12 2L22 12H19V21H5V12H2Z" fill="white" />
+                  {/* TF Monogram in Purple (Primary) - Modern Joined Style */}
+                  {/* Stem */}
+                  <rect x="10.5" y="8" width="3" height="10" fill="#7c3aed" />
+                  {/* Top Bar (T) */}
+                  <rect x="6" y="8" width="12" height="2.5" fill="#7c3aed" />
+                  {/* Middle Bar (F) - Right side */}
+                  <rect x="13.5" y="8" width="4" height="2.5" fill="#7c3aed" />
+                  <rect x="13.5" y="12" width="3.5" height="2.5" fill="#7c3aed" />
+               </svg>
             </div>
             <h1 className="text-xl font-extrabold text-secondary dark:text-white tracking-tight">Trampo<span className="text-primary">Fácil</span></h1>
           </div>
